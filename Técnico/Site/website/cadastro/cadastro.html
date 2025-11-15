@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kingsman | Cadastro</title>
+  <link rel="stylesheet" href="cadastro.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Open+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="cadastro-container">
+    <div class="cadastro-introducao">
+      <div class="conteudo-introducao">
+        <h2>Bem-vindo à Comunidade Kingsman</h2>
+        <p>Descubra o poder da elegância atemporal e transforme a forma como o mundo enxerga você.</p>
+
+        <div class="etapas-cadastro">
+          <div class="etapa ativa">
+            <span class="numero">1</span> Cadastro
+          </div>
+          
+          <a href="../login/login.html" class="etapa link-etapa">
+            <span class="numero">2</span> Login
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="cadastro-formulario">
+      <img src="../../image-assets/LogoKingsman.png" alt="Logo Kingsman" class="logo">
+      <h3>Crie sua conta</h3>
+      <p class="descricao">Preencha seus dados para acessar o sistema</p>
+
+      <form class="formulario">
+        <label>Nome do usuário</label>
+        <input id="ipt_nome" type="text" placeholder="Ex: David Beckham">
+
+        <label>E-mail</label>
+        <input id="ipt_email" type="email" placeholder="Ex: davidbeckham@gmail.com">
+
+        <label>Senha</label>
+        <input id="ipt_senha" type="password" placeholder="Insira sua senha">
+
+        <label>Confirmar senha</label>
+        <input id="ipt_confirmar" type="password" placeholder="Redigite sua senha">
+
+          <p id="responseValidator" class="mensagem"></p>
+
+
+        <button onclick="validate_cadastrar()" type="button">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    var nome;
+  var email;
+  var senha;
+  var confirmar;
+  var isValid = false;
+  
+  function validate_cadastrar(){
+      nome = ipt_nome.value;
+      email = ipt_email.value;
+      senha = ipt_senha.value;
+      confirmar = ipt_confirmar.value;
+  
+      if (nome.trim().length < 3){
+          responseValidator.innerHTML = "Insira um nome válido (mínimo 3 caracteres)";
+          responseValidator.style.color = "red";
+          isValid = false;
+          return;
+      }
+  
+      email = email.trim();
+      var temEspaco = false;
+      var contador = 0;
+  
+      while (contador < email.length) {
+          if (email[contador] === " ") {
+              temEspaco = true;
+              break;
+          }
+          contador++;
+      }
+  
+      if (temEspaco) {
+          responseValidator.innerHTML = "Não é permitido email com espaços";
+          responseValidator.style.color = "red";
+          isValid = false;
+          return;
+      }
+      else if (!email.includes("@") || !email.includes(".com")){
+          responseValidator.innerHTML = "Insira um endereço de email válido";
+          responseValidator.style.color = "red";
+          isValid = false;
+          return;
+      }
+  
+      if (senha.length < 6){
+          responseValidator.innerHTML = "A senha deve ter pelo menos 6 caracteres";
+          responseValidator.style.color = "red";
+          isValid = false;
+          return;
+      }
+  
+      if (senha !== confirmar){
+          responseValidator.innerHTML = "As senhas precisam ser iguais";
+          responseValidator.style.color = "red";
+          isValid = false;
+          return;
+      }
+  
+  
+      isValid = true;
+      responseValidator.style.color = "lightgreen";
+      responseValidator.innerHTML = "Cadastro válido!";
+  }
+  
+  
+  
+  </script>
+</body>
+</html>
+
+
+
