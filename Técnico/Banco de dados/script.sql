@@ -55,7 +55,7 @@ CREATE TABLE resposta_usuario (
   FOREIGN KEY (fk_resposta) REFERENCES alternativas(id_resposta)
 );
 
--- EXEMPLOS DE INSERT
+
 -- Usuário exemplo
 INSERT INTO usuario (nome, email, senha)
 VALUES ('Breno Abílio', 'breno@kingsman.com', 'senha123');
@@ -90,7 +90,8 @@ INSERT INTO resposta_usuario (fk_usuario_quiz, fk_pergunta, fk_resposta)
 VALUES (1, 1, 1),  -- acertou
        (1, 2, 4);  -- acertou
        
--- SELECT RELATÓRIO DAS RESPOSTAS
+       
+-- SELECT RELATÓRIO 
 SELECT u.nome AS usuario,
        q.nome AS quiz,
        p.texto AS pergunta,
@@ -104,11 +105,12 @@ JOIN pergunta p ON ru.fk_pergunta = p.id_pergunta
 JOIN quiz q ON uq.fk_quiz = q.id_quiz
 WHERE u.id_usuario = 1;
 
+
 -- "VIEW" de ranking
 CREATE VIEW vw_ranking_quiz AS
 SELECT u.nome,
        q.nome AS quiz,
-       COUNT(a.correta) AS total_acertos
+       COUNT(a.correta = 1) AS total_acertos
 FROM resposta_usuario ru
 JOIN usuario_quiz uq ON ru.fk_usuario_quiz = uq.id_usuario_quiz
 JOIN usuario u ON uq.fk_usuario = u.id_usuario
@@ -117,12 +119,15 @@ JOIN quiz q ON uq.fk_quiz = q.id_quiz
 WHERE a.correta = TRUE
 GROUP BY u.nome, q.nome;
 
--- PORCENTAGEM DE ACERTOS (PARA A DASH)
+SELECT * FROM vw_ranking_quiz;
+
+-- % de Acertos para Dashboard (por usuário e quiz)
+
 SELECT 
   u.nome,
   q.nome AS quiz,
   ROUND(
-    (SUM(a.correta = 1) / COUNT(*)) * 100, 2
+    (SUM(a.correta = 1) / COUNT(*)) * 100, 2 -- porcentagem de acertos do usuário no quiz.
   ) AS porcentagem_acertos
 FROM resposta_usuario ru
 JOIN usuario_quiz uq ON ru.fk_usuario_quiz = uq.id_usuario_quiz
@@ -131,5 +136,7 @@ JOIN alternativas a ON ru.fk_resposta = a.id_resposta
 JOIN quiz q ON uq.fk_quiz = q.id_quiz
 WHERE u.id_usuario = 1
 GROUP BY u.nome, q.nome;
+
+
 
 
